@@ -59,7 +59,12 @@
       request.onreadystatechange = function(){
         if(request.readyState===4){ //响应完成 请求结束
           if(request.status===200){ //请求成功
-            document.getElementById("searchResult").innerHTML=request.responseText;
+            var data=JSON.parse(request.responseText);
+            if(data.success){
+              document.getElementById("searchResult").innerHTML=data.msg;
+            }else{
+              document.getElementById("searchResult").innerHTML="出现错误:"+data.msg;
+            }
         }else {
           alert("发生错误:"+request.status);
           }
@@ -80,7 +85,12 @@
       request.onreadystatechange=function(){
         if(request.readyState===4){
           if(request.status===200){
-            document.getElementById("createResult").innerHTML=request.responseText;
+            var data=JSON.parse(request.responseText);
+            if(data.success){
+              document.getElementById("createResult").innerHTML=data.msg;
+            }else{
+              document.getElementById("createResult").innerHTML="出现错误:"+data.msg;
+            }
           }
           else{
             alert("发生错误："+request.status);
