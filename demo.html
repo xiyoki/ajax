@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Demo</title>
+  <style type="text/css">
+    div,p,input,button,select {
+      font-size: 24px;
+    }
+    div {
+      margin: 10px 0px;
+    }
+  </style>
+</head>
+<body>
+  <h2>查询员工</h2>
+  <div>
+    <label for="keyword">请输入员工编号：</label>
+    <input type="text" id="keyword" />
+  </div>
+  <div>  
+    <button id="search">查询</button>
+  </div>
+  <p id="searchResult"></p>
+
+  <h2>新建员工</h2>
+  <div>
+    <label for="staffName">请输入员工姓名：</label>
+    <input type="text" id="staffName" />
+  </div>
+  <div>
+    <label for="staffNumber">请输入员工编号：</label>
+    <input type="text" id="staffNumber" />
+  </div>
+  <div>
+    <label for="staffSex">请选择员工性别：</label>
+    <select id="staffSex">
+      <option>男</option>
+      <option>女</option>
+    </select>
+  </div>
+  <div>
+    <label for="staffJob">请输入员工职位：</label>
+    <input type="text" id="staffJob" />
+  </div>
+  <div>
+    <button id="save">保存</button>
+  </div>
+  <p id="createResult"></p>
+  
+  <script type="text/javascript">
+    document.getElementById("search").onclick = function(){
+      //发送 Ajax 查询请求并处理
+      var request = new XMLHttpRequest();
+      request.open("GET","service.php?number="+document.getElementById("keyword").value);
+      request.send();
+
+      //将响应的内容更新到页面中
+      request.onreadystatechange = function(){
+        if(request.readyState===4){ //响应完成 请求结束
+          if(request.status===200){ //请求成功
+            document.getElementById("searchResult").innerHTML=request.responseText;
+        }else {
+          alert("发生错误:"+request.status);
+          }
+        }
+      }
+    }
+    document.getElementById("save").onclick=function(){
+      var request=new XMLHttpRequest();
+      request.open("POST","service.php");
+      request.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
+
+      var data="name="+document.getElementById("staffName").value+
+      "&number="+document.getElementById("staffNumber").value+
+      "&sex="+document.getElementById("staffSex").value+
+      "&job="+document.getElementById("staffJob").value;
+      request.send(data);
+
+      request.onreadystatechange=function(){
+        if(request.readyState===4){
+          if(request.status===200){
+            document.getElementById("createResult").innerHTML=request.responseText;
+          }
+          else{
+            alert("发生错误："+request.status);
+          }
+        }
+      }
+    }
+  </script>
+</body>
+</html>
